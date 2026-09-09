@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feliz Cumpleaños Carol 💌</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@750&family=Quicksand:wght@500;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #f3e8ff 100%);
+            min-height: 100vh;
+            color: #4b5563;
+            overflow-x: hidden;
+        }
+
+        .title-font { font-family: 'Dancing Script', cursive; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(244, 63, 94, 0.12);
+        }
+
+        .envelope-anim { animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .pulse-btn {
+            animation: pulseGlow 2s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(244, 63, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
+
+        #music-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #modal-foto {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body class="p-3 sm:p-6 flex flex-col items-center justify-center">
+
+    <!-- REPRODUCTOR DE AUDIO OCULTO DE DROPBOX -->
+    <audio id="audio-diomedes" loop>
+        <source src="https://www.dropbox.com/scl/fi/qg1gunruw1ymxzsloa3c4/Diomedes-D-az-Tu-Cumplea-os.mp4?rlkey=dkb5xsilmodk6yijbzmh4e0jo&st=9isv5ens&dl=1" type="audio/mp4">
+    </audio>
+
+    <!-- PANTALLA INICIAL (Al darle clic desbloquea el audio y entra) -->
+    <div id="music-overlay">
+        <div class="bg-white p-8 rounded-[35px] max-w-sm w-full shadow-2xl border-4 border-pink-300 relative">
+            <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center text-pink-500 text-3xl mx-auto mb-4 envelope-anim">
+                <i class="fas fa-gift"></i>
+            </div>
+            <h2 class="text-4xl title-font text-pink-600 mb-2">¡Una sorpresa te espera!</h2>
+            <p class="text-gray-600 text-sm mb-6 leading-relaxed">Hay momentos y personas que merecen celebrarse a lo grande. Toca aquí para descubrirlo.</p>
+            <button onclick="abrirCartaMagica()" class="w-full bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold py-4 px-6 rounded-2xl shadow-lg pulse-btn text-base flex items-center justify-center gap-2">
+                <i class="fas fa-envelope-open-heart"></i> DESCUBRIR SORPRESA
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL PARA AMPLIAR FOTOS -->
+    <div id="modal-foto" onclick="cerrarFoto()">
+        <div class="relative max-w-lg w-full flex flex-col items-center">
+            <button onclick="cerrarFoto()" class="absolute -top-12 right-0 text-white text-3xl bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+                &times;
+            </button>
+            <img id="img-ampliada" src="" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl border-2 border-white object-contain">
+            <p class="text-white text-xs mt-3 tracking-wide opacity-80">Toca en cualquier parte para cerrar</p>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL CELULAR -->
+    <main class="w-full max-w-md mx-auto space-y-6 py-4">
+        
+        <header class="text-center space-y-1">
+            <span class="inline-block bg-pink-100 text-pink-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-1">
+                ✨ ¡Feliz Cumpleaños! ✨
+            </span>
+            <h1 class="text-5xl title-font text-pink-600 font-bold">Carol Vergara</h1>
+            <p class="text-xs text-gray-500 font-medium">Con todo el respeto, cariño y admiración</p>
+        </header>
+
+        <section class="glass-card rounded-[32px] p-6 sm:p-8 relative overflow-hidden shadow-xl border-2 border-pink-200">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-200 rounded-full opacity-30 pointer-events-none"></div>
+            
+            <div class="flex items-center justify-center mb-4 text-pink-500 text-4xl envelope-anim">
+                <i class="fas fa-heart"></i>
+            </div>
+
+            <!-- FOTO PRINCIPAL -->
+            <div class="mb-6 rounded-2xl overflow-hidden shadow-md border-2 border-white bg-pink-50 flex items-center justify-center cursor-pointer relative group" onclick="ampliarFoto('feliz3.jpeg')">
+                <img src="feliz3.jpeg" alt="Foto principal" class="w-full h-auto max-h-80 object-contain mx-auto transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-lg backdrop-blur-sm">
+                    <i class="fas fa-search-plus"></i> Toca para ampliar
+                </div>
+            </div>
+
+            <div class="text-gray-700 text-base sm:text-lg leading-relaxed text-center font-medium italic mb-6 space-y-3">
+                <p>"¡Feliz cumpleaños, Carol! En este día tan especial le deseo lo mejor.</p> 
+                <p>Que Dios la llene de bendiciones, le conceda grandes éxitos en todo lo que se proponga y que cumpla muchísimos años más al lado de las personas que la quieren."</p>
+            </div>
+
+            <!-- REPRODUCTOR INTERACTIVO DE AUDIO -->
+            <div class="bg-pink-50/90 rounded-2xl p-4 border border-pink-200 flex items-center justify-between shadow-inner">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-pink-500 text-white rounded-full flex items-center justify-center text-sm shadow">
+                        <i class="fas fa-music animate-spin" style="animation-duration: 3s;"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-800">Cumpleaños - Diomedes Díaz</p>
+                        <p class="text-[10px] text-pink-600 font-semibold" id="estado-audio">🎵 Reproduciendo música</p>
+                    </div>
+                </div>
+                <button onclick="toggleAudio()" id="btn-audio" class="bg-pink-500 hover:bg-pink-600 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow transition-all">
+                    <i class="fas fa-pause"></i> Pausa
+                </button>
+            </div>
+        </section>
+
+        <!-- GALERÍA DE RECUERDOS -->
+        <section class="space-y-4">
+            <h2 class="text-center text-sm font-bold text-gray-600 uppercase tracking-wider flex items-center justify-center gap-2">
+                <i class="fas fa-camera-retro text-pink-500"></i> Galería de Recuerdos (Toca para ver)
+            </h2>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="glass-card rounded-2xl p-2 shadow-md overflow-hidden cursor-pointer" onclick="ampliarFoto('feliz1.jpeg')">
+                    <img src="feliz1.jpeg" alt="Momento grupal" class="w-full h-36 object-cover rounded-xl mb-2 hover:scale-105 transition-transform">
+                    <p class="text-[11px] text-center text-gray-600 font-semibold truncate">Gran equipo de trabajo</p>
+                </div>
+                <div class="glass-card rounded-2xl p-2 shadow-md overflow-hidden cursor-pointer" onclick="ampliarFoto('feliz4.jpeg')">
+                    <img src="feliz4.jpeg" alt="Estilo y elegancia" class="w-full h-36 object-cover rounded-xl mb-2 hover:scale-105 transition-transform">
+                    <p class="text-[11px] text-center text-gray-600 font-semibold truncate">Momento especial</p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-3 shadow-md overflow-hidden cursor-pointer" onclick="ampliarFoto('feliz5.jpeg')">
+                <img src="feliz5.jpeg" alt="Celebración vallenata" class="w-full h-48 object-cover rounded-xl mb-2 hover:scale-105 transition-transform">
+                <p class="text-[11px] text-center text-gray-600 font-semibold">Celebración inolvidable con buena música 🪗</p>
+            </div>
+        </section>
+
+        <div class="pt-2 pb-6 text-center space-y-3">
+            <button onclick="location.href='índice.html'" class="w-full bg-gray-900 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg text-sm flex items-center justify-center gap-2">
+                <i class="fas fa-arrow-left"></i> Volver al Inicio
+            </button>
+            <div class="text-[10px] text-gray-400 tracking-wider">
+                Desarrollado con ❤️ | Fabian Merchan
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let reproduciendo = false;
+
+        function abrirCartaMagica() {
+            const overlay = document.getElementById('music-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+
+            // Reproducir el audio de Dropbox al hacer clic en el botón de bienvenida
+            const audio = document.getElementById('audio-diomedes');
+            audio.play().then(() => {
+                reproduciendo = true;
+            }).catch(error => {
+                console.log("El navegador requirió interacción adicional", error);
+            });
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('audio-diomedes');
+            const btn = document.getElementById('btn-audio');
+            const estado = document.getElementById('estado-audio');
+            
+            if (reproduciendo) {
+                audio.pause();
+                btn.innerHTML = '<i class="fas fa-play"></i> Reproducir';
+                btn.classList.remove('bg-pink-500');
+                btn.classList.add('bg-gray-400');
+                estado.innerText = "Música pausada";
+                reproduciendo = false;
+            } else {
+                audio.play();
+                btn.innerHTML = '<i class="fas fa-pause"></i> Pausa';
+                btn.classList.remove('bg-gray-400');
+                btn.classList.add('bg-pink-500');
+                estado.innerText = "🎵 Reproduciendo música";
+                reproduciendo = true;
+            }
+        }
+
+        function ampliarFoto(src) {
+            const modal = document.getElementById('modal-foto');
+            const img = document.getElementById('img-ampliada');
+            img.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function cerrarFoto() {
+            const modal = document.getElementById('modal-foto');
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
